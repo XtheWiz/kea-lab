@@ -6,11 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by xthewiz on 5/16/2017 AD.
@@ -18,13 +17,18 @@ import java.util.List;
 @RestController
 public class ReportController {
 
-    @Value("${targetJar}")
-    String targetJar;
+    Properties prop = new Properties();
+    InputStream inputStream = null;
+    String reportJar;
 
     @RequestMapping(value = "/report")
     public DummyModel makeReport(
             @RequestParam(value = "appId", required = false, defaultValue = "none") String appId) throws IOException {
-        System.out.println("Target jar file : " + targetJar);
+        inputStream = new FileInputStream("config.properties");
+        prop.load(inputStream);
+        reportJar = prop.getProperty("report_jar");
+
+        System.out.println("Target jar file : " + reportJar);
         System.out.println("App ID : " + appId);
         DummyModel dummyModel = new DummyModel();
         dummyModel.setId(1);
@@ -32,7 +36,7 @@ public class ReportController {
         List<String> cmdList = new ArrayList<>();
         cmdList.add("java");
         cmdList.add("-jar");
-        cmdList.add(targetJar);
+        cmdList.add(reportJar);
         if(!appId.equals("none")) {
             cmdList.add(appId);
         }
