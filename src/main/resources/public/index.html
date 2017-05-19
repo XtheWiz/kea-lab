@@ -16,7 +16,7 @@
         <div class="col-md-10 col-md-offset-1" ng-controller="ReportController as report">
             <h3>Please input appId, otherwise get all records.</h3><span class="pull-right">beta version</span>
             <form ng-submit="report.makeReport()">
-                <input type="text" ng-model="report.appId" size="30">
+                <input type="text" ng-model="report.appId" size="30" placeholder="0000">
                 <input class="btn-primary" type="submit" value="Make Report">
             </form>
             <hr>
@@ -26,7 +26,7 @@
 
             <div class="container-fluid bg-success">
                 <samp>
-                    <p ng-repeat="message in messages">
+                    <p ng-repeat="message in messages track by $index">
                         {{message}}
                     </p>
                 </samp>
